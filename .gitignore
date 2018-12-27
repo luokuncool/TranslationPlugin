@@ -1,5 +1,9 @@
 .idea/*
-!.idea/compiler.xml
-!/.idea/codeInsightSettings.xml
+!.idea/runConfigurations/
+!.idea/uiDesigner.xml
+.gradle/
+build/
+sandbox/
 out/
-/*.zip
+.DS_Store
+*.iml

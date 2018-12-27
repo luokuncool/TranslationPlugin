@@ -1,0 +1,62 @@
+import org.apache.tools.ant.filters.EscapeUnicode
+
+buildscript {
+    repositories {
+        maven { url = 'https://maven.aliyun.com/repository/public' }
+        jcenter()
+        mavenCentral()
+    }
+}
+
+plugins {
+    id "org.jetbrains.intellij" version "0.3.11"
+    id "org.jetbrains.kotlin.jvm" version "1.2.71"
+}
+
+repositories {
+    maven { url = 'https://maven.aliyun.com/repository/public' }
+    jcenter()
+    mavenCentral()
+}
+
+group = 'cn.yiiguxing.plugin.translate'
+version = "${version}${buildNumber ? '-' + buildNumber : ''}"
+
+intellij {
+    version = ideaVersion
+    pluginName = 'TranslationPlugin'
+    downloadSources = Boolean.valueOf(sources)
+    sandboxDirectory 'sandbox'
+}
+
+patchPluginXml {
+    sinceBuild customSinceBuild
+    untilBuild customUntilBuild
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    compile('com.googlecode.soundlibs:mp3spi:1.9.5.4') {
+        exclude module: 'junit'
+    }
+}
+
+sourceCompatibility = javaVersion
+targetCompatibility = javaTargetVersion
+
+[compileKotlin, compileTestKotlin]*.kotlinOptions {
+    languageVersion = kotlinLanguageVersion
+    apiVersion = kotlinTargetVersion
+    jvmTarget = javaTargetVersion
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(ProcessResources) {
+    filesMatching('**/*.properties') {
+        filter EscapeUnicode
+    }
+}

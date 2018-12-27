@@ -1,5 +1,45 @@
 # Change Log
 
+## [v2.2](https://github.com/YiiGuxing/TranslationPlugin/tree/v2.2) (2018-11-03)
+
+- 翻译替换：支持多种语言
+- 有道翻译：显示词形
+
+## [v2.1.1](https://github.com/YiiGuxing/TranslationPlugin/tree/v2.1.1) (2018-08-18)
+
+- 语言列表排序
+- 保留文本格式选项
+- BUG修复
+
+## [v2.1.0](https://github.com/YiiGuxing/TranslationPlugin/tree/v2.1.0) (2018-07-30)
+
+- 实时翻译
+- 忽略内容配置
+- BUG修复
+
+## [v2.0.3](https://github.com/YiiGuxing/TranslationPlugin/tree/v2.0.3) (2018-04-20)
+
+- 添加百度翻译
+- 翻译原文折叠
+- 优化交互体验
+- BUG修复
+
+## [v2.0.2](https://github.com/YiiGuxing/TranslationPlugin/tree/v2.0.2) (2018-02-07)
+
+- 多语言支持：添加英语语言
+- 添加状态栏图标显示配置
+- BUG修复
+
+## [v2.0.1](https://github.com/YiiGuxing/TranslationPlugin/tree/v2.0.1) (2018-01-21)
+
+- 加入状态栏图标
+- BUG修复
+
+## [v2.0](https://github.com/YiiGuxing/TranslationPlugin/tree/v2.0) (2018-01-15)
+
+- 接入谷歌翻译
+- 用户体验优化
+
 ## [v1.3.6](https://github.com/YiiGuxing/TranslationPlugin/tree/v1.3.6)(2017-07-05)
 
 - Bug修复
