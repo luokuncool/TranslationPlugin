@@ -1,7 +1,5 @@
 /**
  * Contract
- * <p>
- * Created by Yii.Guxing on 2017-09-16 0016.
  */
 package cn.yiiguxing.plugin.translate
 
@@ -12,6 +10,8 @@ import com.intellij.openapi.Disposable
 data class SupportedLanguages(val source: List<Lang>, val target: List<Lang>)
 
 interface Presenter {
+
+    val translatorId: String
 
     /**
      * 历史记录列表
@@ -34,6 +34,16 @@ interface Presenter {
     fun getCache(text: String, srcLang: Lang, targetLang: Lang): Translation?
 
     data class Request(val text: String, val srcLang: Lang, val targetLang: Lang, val translatorId: String)
+
+    /**
+     * 返回目标语言
+     */
+    fun getTargetLang(text: String): Lang
+
+    /**
+     * 更新最后使用的语言
+     */
+    fun updateLastLanguages(srcLang: Lang, targetLang: Lang)
 
     /**
      * 翻译

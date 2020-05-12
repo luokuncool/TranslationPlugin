@@ -7,18 +7,14 @@ import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.util.TextRange
-import javax.swing.Icon
 
 /**
- * AutoSelectAction
- *
- * Created by Yii.Guxing on 2017/9/12
+ * Auto select action.
  */
 abstract class AutoSelectAction(
-        private val checkSelection: Boolean,
-        private val wordPartCondition: CharCondition = DEFAULT_CONDITION,
-        icon: Icon? = null
-) : AnAction(icon) {
+    private val checkSelection: Boolean,
+    private val wordPartCondition: CharCondition = DEFAULT_CONDITION
+) : AnAction() {
 
     protected abstract val selectionMode: SelectionMode
 
@@ -32,11 +28,11 @@ abstract class AutoSelectAction(
     /**
      * 执行操作
      *
-     * @param e              事件
+     * @param event          事件
      * @param editor         编辑器
      * @param selectionRange 取词的范围
      */
-    protected open fun onActionPerformed(e: AnActionEvent, editor: Editor, selectionRange: TextRange) {}
+    protected open fun onActionPerformed(event: AnActionEvent, editor: Editor, selectionRange: TextRange) {}
 
     protected open val AnActionEvent.editor: Editor? get() = CommonDataKeys.EDITOR.getData(dataContext)
 
@@ -72,9 +68,9 @@ abstract class AutoSelectAction(
         }
 
         return TextRange(maxOf(0, offset - 1), minOf(textLength, offset + 1))
-                .let { document.getText(it) }
-                .filterIgnore()
-                .any(wordPartCondition)
+            .let { document.getText(it) }
+            .filterIgnore()
+            .any(wordPartCondition)
     }
 
     private fun AnActionEvent.getSelectionRange() = editor?.run {

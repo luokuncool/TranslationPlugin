@@ -14,7 +14,6 @@ import com.intellij.util.xmlb.annotations.CollectionBean
 import com.intellij.util.xmlb.annotations.MapAnnotation
 import com.intellij.util.xmlb.annotations.Transient
 import java.util.*
-import kotlin.collections.HashMap
 import kotlin.properties.Delegates
 
 /**
@@ -27,9 +26,13 @@ class AppStorage : PersistentStateComponent<AppStorage> {
     private val histories: MutableList<String> = ArrayList(DEFAULT_HISTORY_SIZE)
 
     @MapAnnotation
-    private val languageScores: MutableMap<Lang, Int> = HashMap()
+    private val languageScores: MutableMap<Lang, Int> = EnumMap(Lang::class.java)
 
-    var lastLanguages: LanguagePair = LanguagePair()
+    val lastLanguages: LanguagePair = LanguagePair()
+
+    val lastInstantLanguages: LanguagePair = LanguagePair()
+
+    var lastReplacementTargetLanguage: Lang? = null
 
     /**
      * 最大历史记录长度
@@ -45,7 +48,7 @@ class AppStorage : PersistentStateComponent<AppStorage> {
 
     @Transient
     private val dataChangePublisher: HistoriesChangedListener =
-            ApplicationManager.getApplication().messageBus.syncPublisher(HistoriesChangedListener.TOPIC)
+        ApplicationManager.getApplication().messageBus.syncPublisher(HistoriesChangedListener.TOPIC)
 
     override fun getState(): AppStorage = this
 
@@ -63,6 +66,15 @@ class AppStorage : PersistentStateComponent<AppStorage> {
      */
     fun setLanguageScore(lang: Lang, score: Int) {
         languageScores[lang] = score
+    }
+
+    /**
+     * 增加语言常用评分
+     */
+    fun accumulateLanguageScore(lang: Lang) {
+        if (lang != Lang.AUTO) {
+            languageScores[lang] = languageScores.getOrDefault(lang, 0) + 1
+        }
     }
 
     private fun trimHistoriesSize(maxSize: Int) {
@@ -105,7 +117,7 @@ class AppStorage : PersistentStateComponent<AppStorage> {
      * 清除历史启启记录
      */
     fun clearHistories() {
-        if (!histories.isEmpty()) {
+        if (histories.isNotEmpty()) {
             histories.clear()
             dataChangePublisher.onHistoriesChanged()
         }
@@ -134,9 +146,7 @@ interface HistoriesChangedListener {
     fun onHistoryItemChanged(newHistory: String)
 
     companion object {
-        val TOPIC: Topic<HistoriesChangedListener> = Topic.create(
-                "TranslateHistoriesChanged",
-                HistoriesChangedListener::class.java
-        )
+        val TOPIC: Topic<HistoriesChangedListener> =
+            Topic.create("TranslateHistoriesChanged", HistoriesChangedListener::class.java)
     }
 }
